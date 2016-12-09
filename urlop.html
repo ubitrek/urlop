@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="bower_components/materialize/bin/materialize.css" rel="stylesheet">
+    <link href="urlop2.css" rel="stylesheet">
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/materialize/bin/materialize.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('select').material_select();
+            Materialize.updateTextFields();
+        });
+        $('.datepicker').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+        var app = angular.module('Myapp', [])
+        app.controller('MyController', function($scope) {
+            $scope.CurrentDate = new Date();
+        });
+        app.controller('SElController', ['$scope', function($scope) {
+            $scope.data = {
+                singleSelect: null,
+                kindSelect: null,
+                multipleSelect: [],
+                option1: 'administrator'
+            };
+            $scope.forceUnknownOption = function() {
+                $scope.data.singleSelect = 'nonsense';
+            };
+        }]);
+    </script>
+</head>
+
+<body ng-app="Myapp" ng-controller="SElController ">
+    <div class="noprint">
+        <form name="myForm">
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="name" type="text" class="validate" ng-model="name">
+                    <label for="name">Imię i Nazwisko</label>
+                </div>
+                <div class="col s3">
+                    <label for="stanowisko">Stanowisko</label>
+                    <select class="browser-default" id="stanowisko" name="singleSelect" ng-model="data.singleSelect">
+                  <option value="programista">programista</option>
+                  <option value="administrator">administrator</option>
+                  <option value="BOK">bok</option>
+                </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s3">
+                    <label for="rodzaj">Rodzaj urlopu</label>
+                    <select class="browser-default" id="rodzaj" name="kindSelect" ng-model="data.kindSelect">
+                <option value="wypoczynkowego">wypoczynkowego</option>
+                <option value="bezpłatnego">bezpłatnego</option>
+                <option value="okolicznościowego">okolicznościowego</option>
+                <option value="opieki nad dzieckiem">opieki nad dzieckiem</option>
+              </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s3">
+                    <label for="od">Początek urlopu</label>
+                    <input id="od" type="date" class="datepicker" ng-model="od">
+                </div>
+                <div class="col s3">
+                    <label for="do">Koniec urlopu</label>
+                    <input id="do" type="date" class="datepicker" ng-model="do">
+                </div>
+                <div class="input-field col s1">
+                    <input id="ile" type="text" class="validate" ng-model="ile">
+                    <label for="name">Dni roboczych</label>
+                </div>
+            </div>
+            <div class="row">
+                <a class="waves-effect waves-light btn" onclick="window.print()">Drukuj</a>
+            </div>
+        </form>
+    </div>
+    <div class="page">
+        <div class="top">
+            <div class="left_up">
+                <div>{{ name }}</div>
+                <div class="opis">imię i nazwisko</div>
+                <div>{{data.singleSelect}}</div>
+                <div class="opis">stanowisko</div>
+            </div>
+            <div class="right_up" ng-controller="MyController">Chojnice,dnia {{CurrentDate | date:"dd.MM.yyyy"}}</div>
+        </div>
+        <div class="down">
+            <div>
+                <h4>WNIOSEK URLOPOWY</h4>
+            </div>
+            <div class="content">
+                <div>Proszę o udzielenie mi urlopu {{data.kindSelect}} w okresie od dnia {{ od | date:"dd.MM.yyyy"}} do dnia {{ do | date:"dd.MM.yyyy"}} włącznie tj. {{ ile }} dni roboczych.</div>
+            </div>
+            <div class="stopka">
+                <div class=left_down>
+                    <div class="opis">podpis kierownika</div>
+                </div>
+                <div class="right_down">
+                    <div class="opis">podpis pracownika</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
